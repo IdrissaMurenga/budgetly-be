@@ -3,7 +3,6 @@ import { GraphQLError } from "graphql";
 import User from "../../db/models/userModel.js";
 import { authCheck } from "../../utils/authCheck.js";
 import { generateToken } from "../../utils/generateToken.js";
-import { sendWelcomeEmail } from "../../utils/welcomeEmail.js";
 
 export default {
     Query: {
@@ -57,8 +56,6 @@ export default {
                 
                 // Generate a JWT token for the authenticated user.
                 const token = generateToken(user._id)
-
-                await sendWelcomeEmail(email, userName)
 
                 // Return the user and the JWT token.
                 return { user, token }
