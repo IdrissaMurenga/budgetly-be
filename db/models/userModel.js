@@ -14,10 +14,11 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: function () { return !this.provider }
     },
     provider: {
         type: String,
+        enum: ['google', 'github']
     }
 }, { timestamps: true })
 

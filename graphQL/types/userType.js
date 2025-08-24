@@ -4,6 +4,7 @@ export const userType = `
         userName: String!
         email: String!
         provider: String!
+        transactions: [Transaction]
     }
     type Query {
         me: User

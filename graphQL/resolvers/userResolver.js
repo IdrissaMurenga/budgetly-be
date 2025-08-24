@@ -3,6 +3,7 @@ import { GraphQLError } from "graphql";
 import User from "../../db/models/userModel.js";
 import { authCheck } from "../../utils/authCheck.js";
 import { generateToken } from "../../utils/generateToken.js";
+import { setAuthCookie } from "../../utils/setCookie.js";
 
 export default {
     Query: {
@@ -57,6 +58,8 @@ export default {
                 // Generate a JWT token for the authenticated user.
                 const token = generateToken(user._id)
 
+                setAuthCookie(context.res, token)
+
                 // Return the user and the JWT token.
                 return { user, token }
 
@@ -64,7 +67,7 @@ export default {
                 throw new GraphQLError(error.message);
             }
         },
-        login: async (_, { input }) => {
+        login: async (_, { input }, context) => {
             const { email, password } = input
 
             try {
@@ -88,6 +91,8 @@ export default {
                 
                 // Generate a JWT token for the authenticated user.
                 const token = generateToken(user._id)
+
+                setAuthCookie(context.res, token)
                 
                 // Return the JWT token.
                 return { user, token }
