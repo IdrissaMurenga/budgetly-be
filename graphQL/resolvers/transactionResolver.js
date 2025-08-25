@@ -23,7 +23,7 @@ export default {
         }
     },
     Mutation: {
-        addTransaction: async (_, { input }, context) => {
+        createTransaction: async (_, { input }, context) => {
             const { amount, description, transactionType } = input
             authCheck(context)
             try {
