@@ -19,9 +19,14 @@ const transactionsSchema = new Schema({
     transactionType: {
         type: String,
         required: true,
-        enum: ['expense', 'income', 'transfer']
-    }
-})
+        enum: ['expense', 'income']
+    },
+    categoryId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        required: true
+    },
+}, { timestamps: true })
 
 const Transactions = model('transactions', transactionsSchema)
 

@@ -2,7 +2,6 @@ export const transactionType = `
     enum TransactionType {
         expense
         income
-        transfer
     }
     type Transaction {
         id:ID!
@@ -10,6 +9,7 @@ export const transactionType = `
         amount: Float!
         description: String
         transactionType: TransactionType!
+        category:Category
     }
     type Query {
         transactions: [Transaction]!
@@ -24,6 +24,7 @@ export const transactionType = `
         amount: Float!
         description: String!
         transactionType: TransactionType!
+        categoryId: ID!
     }
     input UpdateTransactionInput {
         amount: Float

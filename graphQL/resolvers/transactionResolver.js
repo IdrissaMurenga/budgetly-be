@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 import Transactions from "../../db/models/transactionsModel.js"
 import { authCheck } from './../../utils/authCheck.js';
+import Category from "../../db/models/categoryModel.js";
 export default {
     Query: {
         transactions: async (_, __, context) => {
@@ -22,18 +23,27 @@ export default {
             }
         }
     },
+    Transaction: {
+        category: async (parent) => {
+            if(!parent.categoryId) return null
+            return await Category.findById(parent.categoryId)
+        }
+    },
     Mutation: {
         createTransaction: async (_, { input }, context) => {
-            const { amount, description, transactionType } = input
+            const { categoryId, transactionType, ...rest } = input
             authCheck(context)
             try {
-                const newTransaction = new Transactions({
-                    user: context.user.id,
-                    amount,
-                    description,
-                    transactionType
+                const category = await Category.findOne({
+                    _id: categoryId,
+                    type: transactionType
                 })
-                console.log(newTransaction)
+                const newTransaction = new Transactions({
+                    ...rest,
+                    transactionType,
+                    categoryId: category._id,
+                    user: context.user.id,
+                })
                 return await newTransaction.save()
             } catch (error) {
                 throw new GraphQLError(`Error adding transactions: ${error.message}`)

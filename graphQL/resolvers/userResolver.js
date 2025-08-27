@@ -4,6 +4,7 @@ import User from "../../db/models/userModel.js";
 import { authCheck } from "../../utils/authCheck.js";
 import { generateToken } from "../../utils/generateToken.js";
 import { setAuthCookie } from "../../utils/setCookie.js";
+import Transactions from "../../db/models/transactionsModel.js";
 
 export default {
     Query: {
@@ -26,7 +27,10 @@ export default {
             const user = await User.findOne({email})
             return user
         },
-    }, 
+    },
+    User: {
+        transactions: async (parent) => await Transactions.find({ user: parent.id })
+    },
     Mutation: {
         signup: async (_, { input }, context) => {
             const { userName, email, password } = input
