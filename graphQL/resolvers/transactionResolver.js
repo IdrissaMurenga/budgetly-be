@@ -16,7 +16,7 @@ export default {
         transaction: async (_, { id }, context) => {
             authCheck(context)
             try {
-                const transaction = await Transactions.findById({ _id: id, user: context.user.id })
+                const transaction = await Transactions.findByOne({ _id: id, user: context.user.id })
                 return transaction
             } catch (error) {
                 throw new GraphQLError(`Error fetching a transaction: ${error.message}`)
